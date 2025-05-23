@@ -37,24 +37,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework.authtoken',
-    'django.contrib.humanize',
-    'django.contrib.sites',
-    'django.contrib.sitemaps',
     'root',
     'services',
-    'properties',
     'accounts',
-    'robots',
-    'captcha',
-    'rest_framework',
-    'django_filters',
-    'drf_yasg',
-    'rest_framework_simplejwt',
-    'mail_templated',
+    'payments',
+    'product',
     'cart',
-    'payment',
-    'corsheaders',
+    
 ]
 
 MIDDLEWARE = [
