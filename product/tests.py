@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 from .models import Product,Category,Brand
+from accounts.models import User
 
 class ProductDetailViewTests(TestCase):
 
@@ -109,3 +110,74 @@ class CategoryPageTests(TestCase):
         response = self.client.get(url)
         self.assertContains(response, "Next")
         self.assertContains(response, "Previous")
+
+class SearchResultsViewTests(TestCase):
+
+    def setUp(self):
+        self.product1 = Product.objects.create(
+            name="Tempor Incididunt",
+            price=129.00,
+            rating=4.8,
+            category="Women's Fashion"
+        )
+        self.product2 = Product.objects.create(
+            name="Elit Consectetur",
+            price=95.00,
+            rating=4.6,
+            category="Men's Collection"
+        )
+
+    def test_search_results_status_code(self):
+        response = self.client.get(reverse('search') + '?q=Tempor')
+        self.assertEqual(response.status_code, 200)
+
+    def test_search_results_template_used(self):
+        response = self.client.get(reverse('search') + '?q=Tempor')
+        self.assertTemplateUsed(response, 'search-results.html')
+
+    def test_search_product_is_shown(self):
+        response = self.client.get(reverse('search') + '?q=Tempor')
+        self.assertContains(response, "Tempor Incididunt")
+        self.assertContains(response, "$129.00")
+
+    def test_non_matching_product_not_shown(self):
+        response = self.client.get(reverse('search') + '?q=Tempor')
+        self.assertNotContains(response, "Elit Consectetur")
+
+    def test_search_term_displayed(self):
+        response = self.client.get(reverse('search') + '?q=Tempor')
+        self.assertContains(response, 'We found')
+        self.assertContains(response, 'Tempor')
+
+    def test_filters_and_sorting_visible(self):
+        response = self.client.get(reverse('search') + '?q=Tempor')
+        self.assertContains(response, 'Sort by:')
+        self.assertContains(response, 'Relevance')
+        self.assertContains(response, 'Newest First')
+
+    def test_product_rating_displayed(self):
+        response = self.client.get(reverse('search') + '?q=Tempor')
+        self.assertContains(response, '4.8')
+        self.assertContains(response, 'star-fill')
+
+    def test_pagination_displayed(self):
+        response = self.client.get(reverse('search') + '?q=Tempor')
+        self.assertContains(response, 'Previous')
+        self.assertContains(response, 'Next')
+        
+class CommentForm(TestCase):
+     def setUp(self):
+         self.user = User.objects.create_user(email="admin@admin.com", password="@project123")
+    
+     def test_form_comment(self):
+        user = self.user
+        product = Product.objects.create(
+        name="test",
+        category = "<create an object of agent>",
+
+
+         )
+        """form = CommentForm(data={
+             "name" : obj user,...
+         })"""
+        self.assertTrue()
