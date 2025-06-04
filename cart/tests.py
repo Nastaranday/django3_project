@@ -38,8 +38,8 @@ class CartViewTests(TestCase):
     def test_cart_quantities_displayed_correctly(self):
         self.client.login(username='testuser', password='password123')
         response = self.client.get(reverse('cartview'))
-        self.assertContains(response, 'value="1"')  # برای محصول 1 و 3
-        self.assertContains(response, 'value="2"')  # برای محصول 2
+        self.assertContains(response, 'value="1"')
+        self.assertContains(response, 'value="2"')
 
     def test_cart_subtotal_calculated_correctly(self):
         expected_subtotal = (89.99 * 1) + (64.99 * 2) + (49.99 * 1)
